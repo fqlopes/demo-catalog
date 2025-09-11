@@ -5,6 +5,7 @@ import com.fqlopes.demonstration.entities.Category;
 import com.fqlopes.demonstration.repositories.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -12,12 +13,12 @@ import java.util.List;
 public class CategoryService {
 
     //campos
-
     @Autowired //Aponta para o Spring forneça automaticamente a dependência necessaria, criando objetos deste tipo
     private CategoryRepository repository;
 
     //métodos
-
+    //@Transactional -> configura a função para que faça uma transação com o banco de dados real
+    @Transactional(readOnly = true) //readOnly: true -> não trava o banco de dados para entrada de novos dados
     public List<Category> findAll(){
         return repository.findAll();
     }

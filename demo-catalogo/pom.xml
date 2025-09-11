@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.fqlopes</groupId>
-	<artifactId>demonstration</artifactId>
+	<artifactId>demo-catalogo</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>demonstration</name>
 	<description>Demonstração de projeto Springboot</description>
@@ -81,6 +81,7 @@
 					</annotationProcessorPaths>
 				</configuration>
 			</plugin>
+
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
@@ -94,6 +95,19 @@
 				</configuration>
 			</plugin>
 		</plugins>
-	</build>
+
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+                <includes>
+                    <include>**/*.sql</include>
+                    <include>**/*.properties</include>
+                    <include>**/*.xml</include>
+                </includes>
+            </resource>
+        </resources>
+
+    </build>
 
 </project>
