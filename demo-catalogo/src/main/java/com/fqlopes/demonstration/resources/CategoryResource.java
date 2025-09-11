@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,9 +30,17 @@ public class CategoryResource {
     //ResponseEntity => objeto spring. Encapsulamento de resposta HTTP (genérico)
     @GetMapping //@GetMapping configura este metodo com endpoint na aplicação
     public ResponseEntity<List<CategoryDTO>> findAll (){
-        List<CategoryDTO> list = service.findAll();
         log.info("LOG: FUI CHAMADO -> RETORNANDO TODA A LISTA");
+        List<CategoryDTO> list = service.findAll();
         //ResponseEntity.ok() -> cria um ResponseEntity.BodyBuilder == HTTP com resposta 200 (OK)
         return ResponseEntity.ok().body(list);
+    }
+
+    //Adicionando rotas para cada ID criado
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<CategoryDTO> findById (@PathVariable Long id){
+        log.info("LOG: FUI CHAMADO -> RETORNANDO POR ID");
+        CategoryDTO dto = service.findById(id);
+        return ResponseEntity.ok().body(dto);
     }
 }
