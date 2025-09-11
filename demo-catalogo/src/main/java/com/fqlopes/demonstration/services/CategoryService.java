@@ -37,7 +37,16 @@ public class CategoryService {
     @Transactional (readOnly = true)
     public CategoryDTO findById (Long id){
         Optional<Category> optionalCategory = repository.findById(id);
-        Category entity = optionalCategory.orElseThrow(() -> new EntityNotFoundException("MOGGADO PELO CHAD"));
+        Category entity = optionalCategory.orElseThrow(() -> new EntityNotFoundException("Entidade não Encontrada"));
+        return new CategoryDTO(entity);
+    }
+
+    @Transactional
+    public CategoryDTO insert(CategoryDTO dto) {
+        //Convertendo nosso DTO em uma entidade Category
+        Category entity = new Category();
+        entity.setName(dto.getName());
+        entity = repository.save(entity);
         return new CategoryDTO(entity);
     }
 }
