@@ -1,6 +1,7 @@
 package com.fqlopes.demonstration.entities;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,9 +23,27 @@ public class Category implements Serializable {
     private Long id;
     private String name;
 
-    //Campo destinado para auditoria. Padronizado em UTC
-    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE") //Registrando o momento de uma transação com banco de dados
+    //Campos destinado para auditoria. Padronizado em UTC
+    @Setter(AccessLevel.NONE) //Lombok: removendo setter deste campo
+    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE") //Registra o momento de uma transação com banco de dados
     private Instant createdAt;
+
+    @Setter(AccessLevel.NONE)
+    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+    private Instant updatedAt;
+
+    //Métodos para ao salvar uma categoria, gerar dados de auditoria (momento de criação/atualização)
+    @PrePersist //É chamado sempre que cria-se uma entidade do tipo categoria
+    public void prePersist () {
+        this.createdAt = Instant.now();
+    }
+
+    @PreUpdate //É chamado sempre que houver alguma atualização de uma entidade de categoria
+    public void preUpdate () {
+        this.updatedAt = Instant.now();
+    }
+
+
 
     //O JPA exige um construtor sem campos!
     public Category (){
