@@ -5,10 +5,10 @@ package com.fqlopes.demonstration.services.exceptions;
 //A resposta sobre os erros HTTP estarão no pacote de recursos (resources)/controladora
 
 
-public class EntityNotFoundException extends RuntimeException{
+public class ResourceNotFoundException extends RuntimeException{
     private static final long serialVersionUID = 1L;
 
-    public EntityNotFoundException(String message){
+    public ResourceNotFoundException(String message){
         super(message);
     }
 

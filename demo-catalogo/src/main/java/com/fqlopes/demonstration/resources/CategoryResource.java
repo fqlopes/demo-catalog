@@ -43,7 +43,7 @@ public class CategoryResource {
         return ResponseEntity.ok().body(dto);
     }
 
-    //CRUD Create/Update: Via objeto, que possui os dados pertinentes
+    //Inserção de Categorias é feito via objeto, que possui os dados pertinentes
     @PostMapping //Padrão REST: Ao inserir um novo recurso, usa-se o método POST
     public ResponseEntity<CategoryDTO> insert (@RequestBody CategoryDTO dto){
         dto = service.insert(dto);
@@ -54,6 +54,13 @@ public class CategoryResource {
                 .path("/{id}").buildAndExpand(dto.getId()).toUri();
 
         return ResponseEntity.created(uri).body(dto);
+    }
+
+    //HTML PUT -> Atualizar um recurso dentro das categorias
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<CategoryDTO> update(@PathVariable Long id, @RequestBody CategoryDTO dto){
+        dto = service.update(id, dto);
+        return ResponseEntity.ok().body(dto);
 
     }
 }
