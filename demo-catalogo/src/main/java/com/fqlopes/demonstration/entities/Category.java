@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.time.Instant;
 
 @Getter
 @Setter
@@ -20,6 +21,10 @@ public class Category implements Serializable {
     @GeneratedValue (strategy = GenerationType.IDENTITY) //Auto-incrementando dentro do banco de dados para o campo "id"
     private Long id;
     private String name;
+
+    //Campo destinado para auditoria. Padronizado em UTC
+    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE") //Registrando o momento de uma transação com banco de dados
+    private Instant createdAt;
 
     //O JPA exige um construtor sem campos!
     public Category (){
