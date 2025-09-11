@@ -4,6 +4,7 @@ package com.fqlopes.demonstration.services;
 import com.fqlopes.demonstration.dto.CategoryDTO;
 import com.fqlopes.demonstration.entities.Category;
 import com.fqlopes.demonstration.repositories.CategoryRepository;
+import com.fqlopes.demonstration.services.exceptions.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,7 +37,7 @@ public class CategoryService {
     @Transactional (readOnly = true)
     public CategoryDTO findById (Long id){
         Optional<Category> optionalCategory = repository.findById(id);
-        Category entity = optionalCategory.get();
+        Category entity = optionalCategory.orElseThrow(() -> new EntityNotFoundException("MOGGADO PELO CHAD"));
         return new CategoryDTO(entity);
     }
 }
