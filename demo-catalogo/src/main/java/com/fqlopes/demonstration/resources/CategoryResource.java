@@ -3,6 +3,7 @@ package com.fqlopes.demonstration.resources;
 //Resources fará a implementação do controlador REST
 //API disponibilizada pelo back-end
 
+import com.fqlopes.demonstration.dto.CategoryDTO;
 import com.fqlopes.demonstration.entities.Category;
 import com.fqlopes.demonstration.services.CategoryService;
 import lombok.extern.slf4j.Slf4j;
@@ -27,8 +28,8 @@ public class CategoryResource {
     //Criando endpoints
     //ResponseEntity => objeto spring. Encapsulamento de resposta HTTP (genérico)
     @GetMapping //@GetMapping configura este metodo com endpoint na aplicação
-    public ResponseEntity<List<Category>> findAll (){
-        List<Category> list = service.findAll();
+    public ResponseEntity<List<CategoryDTO>> findAll (){
+        List<CategoryDTO> list = service.findAll();
         log.info("LOG: FUI CHAMADO -> RETORNANDO TODA A LISTA");
         //ResponseEntity.ok() -> cria um ResponseEntity.BodyBuilder == HTTP com resposta 200 (OK)
         return ResponseEntity.ok().body(list);
