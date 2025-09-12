@@ -8,8 +8,7 @@ import com.fqlopes.demonstration.services.ProductService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -30,18 +29,16 @@ public class ProductResource {
     //ResponseEntity => objeto spring. Encapsulamento de resposta HTTP (genérico)
     //@RequestParam -> Parametro não obrigatório
     @GetMapping //@GetMapping configura este metodo com endpoint na aplicação
-    public ResponseEntity<Page<ProductDTO>> findAll (
-            @RequestParam(value = "page", defaultValue = "0") Integer page,
-            @RequestParam(value = "linesPerPage", defaultValue = "12") Integer linesPerPage,
-            @RequestParam(value = "direction", defaultValue = "ASC") String direction,
-            @RequestParam(value = "orderBy", defaultValue = "name") String orderBy
-    ){
+    public ResponseEntity<Page<ProductDTO>> findAll (Pageable pageable){
+        //O tipo Pageable(SPRING) faz a instanciação automatica, sem necessitar a passada manual de todos os parametros
+        //PARAMETROS: page:page, size:linesPerPage, sort:direction,orderby
+
         //Ao fazer uma busca paginada, declaramos parametros padrão como: numero da pagina, registros por pagina
         //ordenação, e ordem (ascendente ou descendente), sendo utilizados pelo PageRequest
-        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
+
 
         log.info("LOG: FUI CHAMADO -> RETORNANDO TODA A LISTA");
-        Page<ProductDTO> list = service.findAllPaged(pageRequest);
+        Page<ProductDTO> list = service.findAllPaged(pageable);
         //ResponseEntity.ok() -> cria um ResponseEntity.BodyBuilder == HTTP com resposta 200 (OK)
         return ResponseEntity.ok().body(list);
     }
