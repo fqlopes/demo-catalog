@@ -2,7 +2,9 @@ package com.fqlopes.demonstration.services;
 
 
 import com.fqlopes.demonstration.dto.ProductDTO;
+import com.fqlopes.demonstration.entities.Category;
 import com.fqlopes.demonstration.entities.Product;
+import com.fqlopes.demonstration.repositories.CategoryRepository;
 import com.fqlopes.demonstration.repositories.ProductRepository;
 import com.fqlopes.demonstration.services.exceptions.DatabaseException;
 import com.fqlopes.demonstration.services.exceptions.ResourceNotFoundException;
@@ -23,6 +25,9 @@ public class ProductService {
     //campos
     @Autowired
     private ProductRepository repository;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     //métodos
     //@Transactional -> configura a função para que faça uma transação com o banco de dados real
@@ -46,7 +51,7 @@ public class ProductService {
     public ProductDTO insert(ProductDTO dto) {
         //Convertendo nosso DTO em uma entidade Product
         Product entity = new Product();
-        //entity.setName(dto.getName());
+        copyDTOToEntity(dto, entity);
         entity = repository.save(entity);
         return new ProductDTO(entity);
     }
@@ -57,7 +62,7 @@ public class ProductService {
         try {
             //Para atualizar um registro na JPA, é necessário instanciar um objeto com o registro em si
             Product entity = repository.getReferenceById(id); //instanciando sem atualizar o banco de dados
-            //entity.setName(dto.getName());
+            copyDTOToEntity(dto, entity);
             entity = repository.save(entity);
             return new ProductDTO(entity);
 
@@ -81,6 +86,22 @@ public class ProductService {
         catch (DataIntegrityViolationException e){
             throw new DatabaseException("Falha de integridade referencial");
         }
+    }
 
+    private void copyDTOToEntity(ProductDTO dto,Product entity){
+
+        //Dados presentes do produto. ID não é passado pois é gerenciado pelo banco de dados
+        entity.setName(dto.getName());
+        entity.setDescription(dto.getDescription());
+        entity.setDate(dto.getDate());
+        entity.setImgUrl(dto.getImgUrl());
+        entity.setPrice(dto.getPrice());
+
+        //Garantindo que seja copiado apenas as categorias que acompanhem o objeto DTO
+        entity.getCategories().clear();
+        for(var catDTO : dto.getCategories()){
+            Category category = categoryRepository.getReferenceById(catDTO.getId());
+            entity.getCategories().add(category);
+        }
     }
 }
