@@ -11,6 +11,8 @@ import jakarta.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,13 +30,11 @@ public class CategoryService {
     //métodos
     //@Transactional -> configura a função para que faça uma transação com o banco de dados real
     @Transactional(readOnly = true) //readOnly: true -> não trava o banco de dados para entrada de novos dados
-    public List<CategoryDTO> findAll(){
-        List<Category> list = repository.findAll();
+    public Page<CategoryDTO> findAllPaged(PageRequest pageRequest){
+        Page<Category> list = repository.findAll(pageRequest);
 
         //Transformando as entidades dentro da Category em CategoryDTO
-        return list.stream()
-                .map(CategoryDTO::new)
-                .toList();
+        return list.map(CategoryDTO::new);
     }
 
     //Metodo para retornar categorias por ID
