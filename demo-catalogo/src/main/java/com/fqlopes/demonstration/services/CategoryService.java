@@ -18,10 +18,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+
 import java.util.Optional;
 
-@Service //Registra a classe como componente de injeção de dependências Spring -> gerenciamento de instâncias
+@Service //Registra a classe como componente de injeção de dependências Spring ⇾ gerenciamento de instâncias
 public class CategoryService {
 
     //campos
@@ -29,8 +29,8 @@ public class CategoryService {
     private CategoryRepository repository;
 
     //métodos
-    //@Transactional -> configura a função para que faça uma transação com o banco de dados real
-    @Transactional(readOnly = true) //readOnly: true -> não trava o banco de dados para entrada de novos dados
+    //@Transactional → configura a função para fazer uma transação com o banco de dados real
+    @Transactional(readOnly = true) //readOnly: true → não trava o banco de dados para entrada de novos dados
     public Page<CategoryDTO> findAllPaged(Pageable pageable){
         Page<Category> list = repository.findAll(pageable);
 
@@ -38,7 +38,7 @@ public class CategoryService {
         return list.map(CategoryDTO::new);
     }
 
-    //Metodo para retornar categorias por ID
+    //Método para retornar categorias por ID
     @Transactional (readOnly = true)
     public CategoryDTO findById (Long id){
         Optional<Category> optionalCategory = repository.findById(id);
