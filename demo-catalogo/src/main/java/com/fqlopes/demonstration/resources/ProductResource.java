@@ -16,7 +16,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 
 @Slf4j
-@SuppressWarnings("SpellCheckingInspection")
 @RestController
 @RequestMapping(value = "/products") //rota REST -> website http://localhost:8080/categories
 public class ProductResource {
@@ -26,14 +25,14 @@ public class ProductResource {
     private ProductService service;
 
     //Criando endpoints
-    //ResponseEntity => objeto spring. Encapsulamento de resposta HTTP (genérico)
-    //@RequestParam -> Parametro não obrigatório
-    @GetMapping //@GetMapping configura este metodo com endpoint na aplicação
+    //ResponseEntity → objeto spring. Encapsulamento de resposta HTTP (genérico)
+    //@RequestParam → Parâmetro não obrigatório
+    @GetMapping //@GetMapping configura este método com endpoint na aplicação
     public ResponseEntity<Page<ProductDTO>> findAll (Pageable pageable){
-        //O tipo Pageable(SPRING) faz a instanciação automatica, sem necessitar a passada manual de todos os parametros
-        //PARAMETROS: page:page, size:linesPerPage, sort:direction,orderby
+        //O tipo Pageable(SPRING) faz a instanciação automática, sem necessitar a passada manual de todos os parâmetros
+        //PARÂMETROS: page:page, size:linesPerPage, sort:direction, orderBy
 
-        //Ao fazer uma busca paginada, declaramos parametros padrão como: numero da pagina, registros por pagina
+        //Ao fazer uma busca paginada, declaramos parâmetros padrão como: numero da pagina, registros por pagina
         //ordenação, e ordem (ascendente ou descendente), sendo utilizados pelo PageRequest
 
 
@@ -47,6 +46,7 @@ public class ProductResource {
     @GetMapping(value = "/{id}")
     public ResponseEntity<ProductDTO> findById (@PathVariable Long id){
         log.info("LOG: FUI CHAMADO -> RETORNANDO POR ID");
+
         ProductDTO dto = service.findById(id);
         return ResponseEntity.ok().body(dto);
     }
@@ -56,7 +56,7 @@ public class ProductResource {
     public ResponseEntity<ProductDTO> insert (@RequestBody ProductDTO dto){
         dto = service.insert(dto);
 
-        //Por padrdão, ao ser criado um novo recurso, retorna-se o código HTTP 201(Created),
+        //Por padrão, ao ser criado um novo recurso, retorna-se o código HTTP 201(Created),
         //juntamente com sua localização
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}").buildAndExpand(dto.getId()).toUri();
@@ -77,4 +77,6 @@ public class ProductResource {
         service.delete(id);
         return  ResponseEntity.noContent().build();
     }
+
+
 }

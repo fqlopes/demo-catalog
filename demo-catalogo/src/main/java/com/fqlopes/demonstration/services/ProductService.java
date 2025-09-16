@@ -39,7 +39,7 @@ public class ProductService {
         return list.map(ProductDTO::new);
     }
 
-    //Metodo para retornar categorias por ID
+    //Método para retornar categorias por ID
     @Transactional (readOnly = true)
     public ProductDTO findById (Long id){
         Optional<Product> optionalProduct = repository.findById(id);
