@@ -4,6 +4,7 @@ package com.fqlopes.demonstration.services;
 import com.fqlopes.demonstration.dto.RoleDTO;
 import com.fqlopes.demonstration.dto.UserDTO;
 import com.fqlopes.demonstration.dto.UserInsertDTO;
+import com.fqlopes.demonstration.dto.UserUpdateDTO;
 import com.fqlopes.demonstration.entities.Category;
 import com.fqlopes.demonstration.entities.Role;
 import com.fqlopes.demonstration.entities.User;
@@ -61,7 +62,7 @@ public class UserService {
     }
 
     @Transactional
-    public UserDTO update(Long id, UserDTO dto){
+    public UserDTO update(Long id, UserUpdateDTO dto){
 
         try {
             User entity = repository.getReferenceById(id);
