@@ -29,11 +29,13 @@ public class User implements Serializable {
     private Long id;
     private String firstName;
     private String lastName;
+
+    @Column(unique = true)
     private String email; //login
     private String password;
 
     @Setter(AccessLevel.NONE)
-    @ManyToMany
+    @ManyToMany (fetch = FetchType.EAGER) //Força a comunicação entre USER x ROLE préviamente
     @JoinTable(name = "tb_user_role",
                joinColumns = @JoinColumn(name = "user_id"), //Chave estrangeira (FK) referente à classe User
                inverseJoinColumns = @JoinColumn(name = "role_id")
