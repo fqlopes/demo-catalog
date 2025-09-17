@@ -99,7 +99,7 @@ public class ProductResourceTests {
     public void deleteShouldReturnNotFoundWhenIdDoesNotExist() throws Exception{
 
         ResultActions result =
-                mockMvc.perform(MockMvcRequestBuilders.delete("/product/{id}", nonExistingId)
+                mockMvc.perform(MockMvcRequestBuilders.delete("/products/{id}", nonExistingId)
                         .accept(MediaType.APPLICATION_JSON));
 
         result.andExpect(MockMvcResultMatchers.status().isNotFound());
