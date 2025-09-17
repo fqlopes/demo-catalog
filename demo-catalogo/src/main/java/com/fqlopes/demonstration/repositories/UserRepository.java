@@ -13,4 +13,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository //Configura a interface como repositório de dados. Cuida das consultas, inserção, CRUD para o banco de dados
 public interface UserRepository extends JpaRepository<User, Long> {
+
+    User findByEmail(String email);
 }
