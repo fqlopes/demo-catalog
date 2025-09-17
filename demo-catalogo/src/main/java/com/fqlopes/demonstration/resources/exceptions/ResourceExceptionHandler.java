@@ -6,6 +6,8 @@ import com.fqlopes.demonstration.services.exceptions.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -39,6 +41,24 @@ public class ResourceExceptionHandler {
         error.setError("Database Exception");
         error.setMessage(e.getMessage());
         error.setPath(request.getRequestURI());
+        return ResponseEntity.status(status).body(error);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ValidationError> validation (MethodArgumentNotValidException e, HttpServletRequest request){
+        int status = HttpStatus.UNPROCESSABLE_ENTITY.value();
+        ValidationError error = new ValidationError();
+        error.setTimestamp(Instant.now());
+        error.setStatus(status);
+        error.setError("Validation Exception");
+        error.setMessage(e.getMessage());
+        error.setPath(request.getRequestURI());
+
+        //Acessando ao campo de erros proveniente da validação de BEANS
+        for(FieldError fails : e.getBindingResult().getFieldErrors()) {
+            error.addError(fails.getField(), fails.getDefaultMessage());
+        }
+
         return ResponseEntity.status(status).body(error);
     }
 }
