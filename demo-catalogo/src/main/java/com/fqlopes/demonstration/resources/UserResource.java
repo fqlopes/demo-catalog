@@ -6,6 +6,7 @@ package com.fqlopes.demonstration.resources;
 import com.fqlopes.demonstration.dto.UserDTO;
 import com.fqlopes.demonstration.dto.UserInsertDTO;
 import com.fqlopes.demonstration.services.UserService;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -54,7 +55,7 @@ public class UserResource {
 
     //Inserção de Categorias é feito via objeto, que possui os dados pertinentes
     @PostMapping //Padrão REST: Ao inserir um novo recurso, usa-se o método POST
-    public ResponseEntity<UserDTO> insert (@RequestBody UserInsertDTO dto){
+    public ResponseEntity<UserDTO> insert (@Valid @RequestBody UserInsertDTO dto){
         UserDTO newDTO = service.insert(dto);
         //Por padrão, ao ser criado um novo recurso, retorna-se o código HTTP 201(Created),
         //juntamente com sua localização
@@ -66,7 +67,7 @@ public class UserResource {
 
     //HTML PUT -> Atualizar um recurso dentro das categorias
     @PutMapping(value = "/{id}")
-    public ResponseEntity<UserDTO> update(@PathVariable Long id, @RequestBody UserDTO dto){
+    public ResponseEntity<UserDTO> update(@PathVariable Long id,@Valid @RequestBody UserDTO dto){
         dto = service.update(id, dto);
         return ResponseEntity.ok().body(dto);
     }

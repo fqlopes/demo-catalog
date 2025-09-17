@@ -1,6 +1,8 @@
 package com.fqlopes.demonstration.dto;
 
 import com.fqlopes.demonstration.entities.User;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,8 +18,13 @@ public class UserDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Long id;
+
+
+    @NotBlank(message = "Campo Obrigatório")
     private String firstName;
     private String lastName;
+
+    @Email (message = "E-mail válido")
     private String email;
 
     //Campo para auxiliar a transição dados do usuário e suas permissões
