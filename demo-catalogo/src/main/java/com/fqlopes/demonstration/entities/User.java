@@ -4,9 +4,13 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /*
@@ -20,7 +24,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "tb_user")
-public class User implements Serializable {
+public class User implements Serializable, UserDetails {
     private static final long serialVersionUID = 1L;
 
 
@@ -40,6 +44,8 @@ public class User implements Serializable {
                joinColumns = @JoinColumn(name = "user_id"), //Chave estrangeira (FK) referente à classe User
                inverseJoinColumns = @JoinColumn(name = "role_id")
     )
+
+    //Cada <Role> representa um tipo de conta/autoridade para cada objeto User
     private Set<Role> roles = new HashSet<>();
 
     public User() {
@@ -51,5 +57,34 @@ public class User implements Serializable {
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+    }
+
+    //Adicionando novos Roles
+    public void addRole(Role role){
+        roles.add(role);
+    }
+
+    //Verifica se dado usuário terá um role
+    public boolean hasRole(String roleName){
+        for(Role role : roles){
+            if (role.getAuthority().equals(roleName)){
+                return true;
+            }
+        }
+        return false;
+
+    }
+
+
+    //Métodos interface UserDetails
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return roles;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
     }
 }

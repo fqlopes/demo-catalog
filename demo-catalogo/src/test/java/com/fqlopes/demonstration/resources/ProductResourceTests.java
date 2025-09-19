@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 
 
@@ -27,7 +28,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.List;
 
-@WebMvcTest(ProductResource.class)
+@WebMvcTest(value = ProductResource.class, excludeAutoConfiguration = {SecurityAutoConfiguration.class})
 public class ProductResourceTests {
 
     private Long existingId;
@@ -178,9 +179,9 @@ public class ProductResourceTests {
 
         //Campos de JSON presentes na pagina web
         result.andExpect(MockMvcResultMatchers.status().isOk());
-        result.andExpect(MockMvcResultMatchers.jsonPath("$.id").exists());
-        result.andExpect(MockMvcResultMatchers.jsonPath("$.name").exists());
-        result.andExpect(MockMvcResultMatchers.jsonPath("$.description").exists());
+        result.andExpect(MockMvcResultMatchers.jsonPath("$.content[0].id").exists());
+        result.andExpect(MockMvcResultMatchers.jsonPath("$.content[0].name").exists());
+        result.andExpect(MockMvcResultMatchers.jsonPath("$.content[0].description").exists());
     }
 
     @Test

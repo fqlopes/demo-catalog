@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -54,6 +55,7 @@ public class ProductResource {
 
     //Inserção de Categorias é feito via objeto, que possui os dados pertinentes
     @PostMapping //Padrão REST: Ao inserir um novo recurso, usa-se o método POST
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_OPERATOR')")
     public ResponseEntity<ProductDTO> insert (@Valid @RequestBody ProductDTO dto){
         dto = service.insert(dto);
 
@@ -67,6 +69,7 @@ public class ProductResource {
 
     //HTML PUT -> Atualizar um recurso dentro das categorias
     @PutMapping(value = "/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_OPERATOR')")
     public ResponseEntity<ProductDTO> update(@PathVariable Long id,@Valid @RequestBody ProductDTO dto){
         dto = service.update(id, dto);
         return ResponseEntity.ok().body(dto);
@@ -74,6 +77,7 @@ public class ProductResource {
 
     //HTTP DELETE -> Remover categorias
     @DeleteMapping(value = "/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_OPERATOR')")
     public ResponseEntity<Void> delete(@PathVariable Long id){
         service.delete(id);
         return  ResponseEntity.noContent().build();

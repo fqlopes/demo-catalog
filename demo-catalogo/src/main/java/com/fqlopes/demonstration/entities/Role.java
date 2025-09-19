@@ -7,6 +7,7 @@ package com.fqlopes.demonstration.entities;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
 
 import java.io.Serializable;
 
@@ -14,7 +15,7 @@ import java.io.Serializable;
 @Setter
 @Entity
 @Table(name = "tb_role")
-public class Role implements Serializable {
+public class Role implements Serializable, GrantedAuthority {
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -29,4 +30,12 @@ public class Role implements Serializable {
         this.id = id;
         this.authority = authority;
     }
+
+    //Override sobre o @Getter gerado pelo Lombok
+    @Override
+    public String getAuthority(){
+        return authority;
+    }
+
+
 }
